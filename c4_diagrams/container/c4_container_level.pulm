@@ -1,0 +1,30 @@
+@startuml
+!include https://raw.githubusercontent.com/kirchsth/C4-PlantUML/extended/C4_Container.puml
+
+title "Container level"
+
+Person(person, "Personal banking Customer", "A customer of the bank, with personal bank accounts.")
+
+System_Boundary(internetBankinkSystem, "Internet Banking System"){
+    Container(webApplication, "Web Application", "Delivers the static content and the Internet banking single page application.")
+    Container(singelPageApplication, "Singel-Page Application", "Provides of the Internet banking functionality to customers via their web browser")
+    Container(mobileApp, "Mobile App", "Provides a limited subset of the Internet banking functionality to customers via their mobile device.")
+    Container(apiApplication, "API Application", "Provides Internet banking functionality via a JSON/HTTPS API")
+    ContainerDb(database, "Database", "Stores user registration information, hashed authentication credentials, access logs, etc.")
+}
+
+System_Ext(emailSystem, "E-mail System", "The internal Microsoft Exchange e-mail system")
+
+System_Ext(mainframeBankingSystem, "Mainframe Banking System", "Stores all of the core banking information about customers, accounts, transactions, ect.")
+
+Rel(person, webApplication, "Visits bigbank.com/ib using [HTTPS]")
+Rel(person, singelPageApplication, "Visits account balances, and makes payments using")
+Rel(person, mobileApp, "Visits account balances, and makes payments using")
+Rel(webApplication, singelPageApplication, "Delivers to the customer's web browser")
+Rel(singelPageApplication, apiApplication, "Makes API calls to [JSON/HTTPS]")
+Rel(mobileApp, apiApplication, "Makes API calls to [JSON/HTTPS]")
+Rel(apiApplication, database, "Reads from and writes to [JDBC]")
+Rel(apiApplication, emailSystem, "Sends e-mail using")
+Rel(emailSystem, person, "Sends e-mail to")
+Rel(apiApplication, mainframeBankingSystem, "Makes API calls to [XML/HTTPS]")
+@enduml

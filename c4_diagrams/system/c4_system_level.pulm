@@ -1,0 +1,15 @@
+@startuml
+!include https://raw.githubusercontent.com/kirchsth/C4-PlantUML/extended/C4_Container.puml
+
+title "System level"
+
+Person(person, "Personal banking Customer", "A customer of the bank, with personal bank accounts.")
+System(internetBankinkSystem, "Internet Banking System", "Allow customers to view information about their bank accounts, and make payments.")
+System_Ext(emailSystem, "E-mail System", "The internal Microsoft Exchange e-mail system")
+System_Ext(mainframeBankingSystem, "Mainframe Banking System", "Stores all of the core banking information about customers, accounts, transactions, ect.")
+
+Rel(person, internetBankinkSystem, "Views account balances and makes payments using")
+Rel(internetBankinkSystem, emailSystem, "Sends e-mail using")
+Rel(emailSystem, person, "Sends e-mail to")
+Rel(internetBankinkSystem, mainframeBankingSystem, "Gets account information from, and makes payments using")
+@enduml
